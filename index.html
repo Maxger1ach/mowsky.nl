@@ -6,7 +6,7 @@
     <title>MAXIMUM GOON MODE</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; overflow: hidden; }
-        html, body { width: 100%; height: 100%; background: black; position: relative; }
+        html, body { width: 100%; height: 100%; background: black; position: relative; cursor: none; }
 
         .chaos-img {
             position: absolute;
@@ -34,52 +34,18 @@
             0% { filter: hue-rotate(0deg) brightness(1); }
             100% { filter: hue-rotate(360deg) brightness(2); }
         }
-
-        .talking {
-            position: absolute;
-            font-size: 20px;
-            color: white;
-            font-weight: bold;
-            text-shadow: 2px 2px red, -2px -2px blue;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px;
-            border-radius: 5px;
-            animation: glitchText 0.1s infinite alternate;
-        }
-
-        @keyframes glitchText {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.2); }
-        }
     </style>
 </head>
 <body>
     <script>
-        const phrases = [
-            "AAAAAAAAAAA",
-            "BRAINROT INTENSIFIES",
-            "WHY AM I HERE",
-            "HELP",
-            "I AM MO",
-            "GOON MODE: ON",
-            "THE MO IS COMING",
-            "HIDE",
-            "SEND HELP",
-            "I AM IN YOUR WALLS"
-        ];
-
         const sounds = [
             "https://www.myinstants.com/media/sounds/vine-boom.mp3",
             "https://www.myinstants.com/media/sounds/among-us.mp3",
             "https://www.myinstants.com/media/sounds/goofy-ahh-sound.mp3",
             "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3",
             "https://www.myinstants.com/media/sounds/windows-error.mp3",
-            "https://www.myinstants.com/media/sounds/discord-notification.mp3",
             "https://www.myinstants.com/media/sounds/fart-with-reverb.mp3",
-            "https://www.myinstants.com/media/sounds/hog-rider.mp3",
-            "https://www.myinstants.com/media/sounds/oh-my-god_5.mp3",
-            "https://www.myinstants.com/media/sounds/roblox-oof.mp3",
-            "https://www.myinstants.com/media/sounds/mario-scream.mp3"
+            "https://www.myinstants.com/media/sounds/hog-rider.mp3"
         ];
 
         function spawnMaxChaos() {
@@ -94,16 +60,6 @@
                 document.body.appendChild(img);
 
                 setTimeout(() => { img.remove(); }, 5000);
-
-                if (Math.random() > 0.7) {
-                    let talk = document.createElement('div');
-                    talk.classList.add('talking');
-                    talk.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-                    talk.style.top = Math.random() * 80 + 'vh';
-                    talk.style.left = Math.random() * 80 + 'vw';
-                    document.body.appendChild(talk);
-                    setTimeout(() => { talk.remove(); }, 2000);
-                }
             }, 100);
         }
 
@@ -115,8 +71,31 @@
             }, Math.random() * 2000 + 500);
         }
 
+        function shakeScreen() {
+            setInterval(() => {
+                document.body.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+            }, 50);
+        }
+
+        function spawnErrorPopups() {
+            setInterval(() => {
+                alert("ERROR: Your PC has been hacked by GOONWARE.EXE");
+            }, Math.random() * 10000 + 5000);
+        }
+
+        function randomRickroll() {
+            setInterval(() => {
+                if (Math.random() > 0.8) {
+                    window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+                }
+            }, Math.random() * 15000 + 5000);
+        }
+
         spawnMaxChaos();
         playRandomSounds();
+        shakeScreen();
+        spawnErrorPopups();
+        randomRickroll();
     </script>
 </body>
 </html>
