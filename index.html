@@ -61,20 +61,10 @@
 </head>
 <body>
     <div class="goon-shrine"></div>
+    <audio autoplay loop>
+        <source src="https://example.com/king_von.mp3" type="audio/mpeg">
+    </audio>
     <script>
-        const sounds = [
-            "https://www.myinstants.com/media/sounds/vine-boom.mp3",
-            "https://www.myinstants.com/media/sounds/among-us.mp3",
-            "https://www.myinstants.com/media/sounds/goofy-ahh-sound.mp3",
-            "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3",
-            "https://www.myinstants.com/media/sounds/windows-error.mp3",
-            "https://www.myinstants.com/media/sounds/fart-with-reverb.mp3",
-            "https://www.myinstants.com/media/sounds/hog-rider.mp3",
-            "https://www.myinstants.com/media/sounds/mangoes.mp3",
-            "https://www.myinstants.com/media/sounds/bruh.mp3",
-            "https://www.myinstants.com/media/sounds/oh-my-god.mp3"
-        ];
-
         function spawnMaxChaos() {
             setInterval(() => {
                 let img = document.createElement('div');
@@ -89,34 +79,6 @@
             }, 100);
         }
 
-        function playRandomSounds() {
-            setInterval(() => {
-                let audio = new Audio(sounds[Math.floor(Math.random() * sounds.length)]);
-                audio.volume = 1;
-                audio.play();
-            }, Math.random() * 2000 + 500);
-        }
-
-        function shakeScreen() {
-            setInterval(() => {
-                document.body.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
-            }, 50);
-        }
-
-        function spawnErrorPopups() {
-            setInterval(() => {
-                alert("ERROR: Your PC has been hacked by GOONWARE.EXE");
-            }, Math.random() * 10000 + 5000);
-        }
-
-        function randomRickroll() {
-            setInterval(() => {
-                if (Math.random() > 0.8) {
-                    window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
-                }
-            }, Math.random() * 15000 + 5000);
-        }
-
         document.addEventListener("mousemove", function(e) {
             let trail = document.createElement("div");
             trail.classList.add("mouse-trail");
@@ -126,11 +88,19 @@
             setTimeout(() => { trail.remove(); }, 500);
         });
 
+        function addGame() {
+            let gameFrame = document.createElement("iframe");
+            gameFrame.src = "https://example.com/cursed-game";
+            gameFrame.style.position = "fixed";
+            gameFrame.style.bottom = "50px";
+            gameFrame.style.left = "50px";
+            gameFrame.style.width = "400px";
+            gameFrame.style.height = "300px";
+            document.body.appendChild(gameFrame);
+        }
+
         spawnMaxChaos();
-        playRandomSounds();
-        shakeScreen();
-        spawnErrorPopups();
-        randomRickroll();
+        addGame();
     </script>
 </body>
 </html>
