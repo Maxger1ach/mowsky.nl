@@ -14,15 +14,15 @@
             height: 100px;
             background: url('mo.png') no-repeat center;
             background-size: cover;
-            animation: moveAround 0.5s infinite alternate ease-in-out, rotate 0.1s infinite linear, flicker 0.05s infinite alternate;
+            animation: moveAround 0.3s infinite alternate ease-in-out, rotate 0.05s infinite linear, flicker 0.02s infinite alternate;
         }
 
         @keyframes moveAround {
             0% { transform: translate(0, 0); }
-            25% { transform: translate(90vw, 30vh) rotate(180deg); }
-            50% { transform: translate(60vw, 90vh) rotate(360deg); }
-            75% { transform: translate(10vw, 50vh) rotate(540deg); }
-            100% { transform: translate(0, 0) rotate(720deg); }
+            25% { transform: translate(90vw, 30vh) rotate(360deg); }
+            50% { transform: translate(60vw, 90vh) rotate(720deg); }
+            75% { transform: translate(10vw, 50vh) rotate(1080deg); }
+            100% { transform: translate(0, 0) rotate(1440deg); }
         }
 
         @keyframes rotate {
@@ -48,7 +48,7 @@
 
         @keyframes spinTrail {
             0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(2160deg) scale(5); }
+            100% { transform: rotate(2160deg) scale(5); filter: brightness(10) hue-rotate(720deg); }
         }
 
         .goon-shrine {
@@ -61,7 +61,13 @@
             background-size: cover;
             border: 50px solid red;
             box-shadow: 0 0 300px red;
-            animation: flicker 0.02s infinite alternate;
+            animation: flicker 0.02s infinite alternate, explode 1s infinite;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
         }
 
         .game-area {
@@ -74,7 +80,7 @@
             background: url('mo.png') no-repeat center;
             background-size: cover;
             border: 5px solid yellow;
-            animation: rotate 1s infinite linear;
+            animation: rotate 0.5s infinite linear;
         }
     </style>
 </head>
@@ -90,11 +96,12 @@
             img.className = "chaos-img";
             img.style.left = Math.random() * window.innerWidth + "px";
             img.style.top = Math.random() * window.innerHeight + "px";
+            img.addEventListener("click", () => playRandomSound());
             document.body.appendChild(img);
             setTimeout(() => img.remove(), 3000);
         }
 
-        setInterval(createMoImage, 50);
+        setInterval(createMoImage, 30);
 
         document.addEventListener("mousemove", (e) => {
             for (let i = 0; i < 20; i++) {
@@ -103,18 +110,26 @@
                 trail.style.left = `${e.pageX + Math.random() * 50}px`;
                 trail.style.top = `${e.pageY + Math.random() * 50}px`;
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 300);
+                setTimeout(() => trail.remove(), 500);
             }
         });
 
         function playRandomSound() {
             let sounds = [
+                'https://www.myinstants.com/media/sounds/oof.mp3',
+                'https://www.myinstants.com/media/sounds/vine-boom.mp3',
+                'https://www.myinstants.com/media/sounds/error.mp3',
+                'https://www.myinstants.com/media/sounds/wilhelm-scream.mp3',
+                'https://www.myinstants.com/media/sounds/roblox-death.mp3',
+                'https://www.myinstants.com/media/sounds/metal-pipe.mp3',
+                'https://www.myinstants.com/media/sounds/windows-error.mp3'
             ];
             let audio = new Audio(sounds[Math.floor(Math.random() * sounds.length)]);
+            audio.volume = 1;
             audio.play();
         }
 
-        setInterval(playRandomSound, 3000);
+        setInterval(playRandomSound, 2000);
 
         function moveGameArea() {
             let game = document.querySelector(".game-area");
@@ -122,7 +137,7 @@
             game.style.top = Math.random() * window.innerHeight + "px";
         }
 
-        setInterval(moveGameArea, 200);
+        setInterval(moveGameArea, 100);
     </script>
 </body>
 </html>
