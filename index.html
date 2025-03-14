@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tuff website</title>
+    <title>BRAINROT MAX</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; overflow: hidden; }
         html, body { width: 100%; height: 100%; background: black; position: relative; }
-        
-        /* Cursed bouncing, flashing images */
+
+        /* The bouncing, moving, cursed images */
         .bouncing-img {
             position: absolute;
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
             background: url('mo.png') no-repeat center;
             background-size: cover;
-            animation: bounce 1s infinite alternate ease-in-out, rotate 0.5s infinite linear, flicker 0.1s infinite alternate;
+            animation: moveAround 3s infinite linear, rotate 1s infinite linear, flicker 0.1s infinite alternate;
         }
 
-        @keyframes bounce {
+        @keyframes moveAround {
             0% { top: 0; left: 0; }
-            100% { top: 90vh; left: 90vw; }
+            25% { top: 80vh; left: 20vw; }
+            50% { top: 50vh; left: 80vw; }
+            75% { top: 20vh; left: 40vw; }
+            100% { top: 0; left: 0; }
         }
 
         @keyframes rotate {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(720deg) scale(1.5); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes flicker {
@@ -33,7 +36,25 @@
             100% { filter: hue-rotate(360deg) brightness(2); }
         }
 
-        /* Cursed "game" button */
+        /* The "talking" images */
+        .talking {
+            position: absolute;
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px red, -2px -2px blue;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 5px;
+            animation: glitchText 0.1s infinite alternate;
+        }
+
+        @keyframes glitchText {
+            0% { left: 10%; top: 10%; }
+            100% { left: 12%; top: 9%; }
+        }
+
+        /* The dumbest "game" ever */
         #game {
             position: absolute;
             top: 50%;
@@ -52,35 +73,47 @@
             0% { transform: translate(-50%, -50%) rotate(5deg); }
             100% { transform: translate(-50%, -50%) rotate(-5deg); }
         }
-
-        /* Text spam (but still using your image lmao) */
-        .text {
-            position: absolute;
-            font-size: 30px;
-            color: white;
-            font-weight: bold;
-            top: 10%;
-            left: 10%;
-            text-shadow: 2px 2px red, -2px -2px blue;
-            animation: glitchText 0.1s infinite alternate;
-        }
-
-        @keyframes glitchText {
-            0% { left: 10%; top: 10%; }
-            100% { left: 12%; top: 9%; }
-        }
     </style>
 </head>
 <body>
     <script>
+        const phrases = [
+            "HELP ME", 
+            "I AM MO",
+            "BRAINROT ACTIVATED",
+            "WHY AM I HERE",
+            "AAAAAAAAAAA",
+            "MOOOOO",
+            "YOU CAN'T ESCAPE",
+            "Goon mode: ON"
+        ];
+
+        const sounds = [
+            "https://www.myinstants.com/media/sounds/vine-boom.mp3",
+            "https://www.myinstants.com/media/sounds/among-us.mp3",
+            "https://www.myinstants.com/media/sounds/goofy-ahh-sound.mp3",
+            "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"
+        ];
+
         function spawnChaos() {
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 50; i++) {
                 let img = document.createElement('div');
                 img.classList.add('bouncing-img');
                 img.style.left = Math.random() * window.innerWidth + 'px';
                 img.style.top = Math.random() * window.innerHeight + 'px';
-                img.style.animationDuration = (Math.random() * 1.5 + 0.5) + 's';
+                img.style.animationDuration = (Math.random() * 3 + 1) + 's';
                 document.body.appendChild(img);
+                
+                // Randomly make images "talk"
+                setInterval(() => {
+                    let talk = document.createElement('div');
+                    talk.classList.add('talking');
+                    talk.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+                    talk.style.top = img.style.top;
+                    talk.style.left = img.style.left;
+                    document.body.appendChild(talk);
+                    setTimeout(() => { talk.remove(); }, 1000);
+                }, Math.random() * 3000 + 500);
             }
         }
 
@@ -95,36 +128,24 @@
                     gameDiv.style.width = size * 1.3 + 'px';
                     gameDiv.style.height = size * 1.3 + 'px';
                 } else {
-                    alert('Congratulations?');
+                    alert('YOU HAVE ASCENDED.');
                     gameDiv.style.width = '200px';
                     gameDiv.style.height = '200px';
                 }
             });
         }
 
-        function spawnTextSpam() {
-            for (let i = 0; i < 10; i++) {
-                let text = document.createElement('div');
-                text.classList.add('text');
-                text.innerHTML = `<img src="mo.png" width="100">`; 
-                text.style.top = Math.random() * 80 + 'vh';
-                text.style.left = Math.random() * 80 + 'vw';
-                text.style.animationDuration = (Math.random() * 0.2 + 0.1) + 's';
-                document.body.appendChild(text);
-            }
-        }
-
-        function playHorrificNoise() {
-            let audio = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3'); 
-            audio.loop = true;
-            audio.volume = 1;
-            audio.play();
+        function playRandomSounds() {
+            setInterval(() => {
+                let audio = new Audio(sounds[Math.floor(Math.random() * sounds.length)]);
+                audio.volume = 1;
+                audio.play();
+            }, Math.random() * 2000 + 500);
         }
 
         spawnChaos();
         cursedGame();
-        spawnTextSpam();
-        playHorrificNoise();
+        playRandomSounds();
     </script>
 </body>
 </html>
