@@ -57,50 +57,63 @@
             box-shadow: 0 0 20px red;
             animation: flicker 0.2s infinite alternate;
         }
+
+        #gameCanvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: black;
+            border: 5px solid red;
+        }
     </style>
 </head>
 <body>
     <div class="goon-shrine"></div>
     <audio autoplay loop>
-        <source src="https://archive.org/download/king-von_202012/king%20von%20took%20her%20to%20the%20o%20official%20video.mp3" type="audio/mpeg">
+        <source src="https://example.com/king_von.mp3" type="audio/mpeg">
     </audio>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
     <script>
-        function spawnMaxChaos() {
-            setInterval(() => {
-                let img = document.createElement('div');
-                img.classList.add('chaos-img');
-                img.style.left = Math.random() * window.innerWidth + 'px';
-                img.style.top = Math.random() * window.innerHeight + 'px';
-                img.style.width = (Math.random() * 100 + 50) + 'px';
-                img.style.height = img.style.width;
-                img.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                document.body.appendChild(img);
-                setTimeout(() => { img.remove(); }, 5000);
-            }, 100);
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        
+        class Mo {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 50;
+                this.speedX = (Math.random() - 0.5) * 5;
+                this.speedY = (Math.random() - 0.5) * 5;
+            }
+            move() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width - this.size) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height - this.size) this.speedY *= -1;
+            }
+            draw() {
+                let img = new Image();
+                img.src = 'mo.png';
+                ctx.drawImage(img, this.x, this.y, this.size, this.size);
+            }
         }
 
-        document.addEventListener("mousemove", function(e) {
-            let trail = document.createElement("div");
-            trail.classList.add("mouse-trail");
-            trail.style.left = e.pageX + "px";
-            trail.style.top = e.pageY + "px";
-            document.body.appendChild(trail);
-            setTimeout(() => { trail.remove(); }, 500);
-        });
-
-        function addGame() {
-            let gameFrame = document.createElement("iframe");
-            gameFrame.src = "https://example.com/cursed-game";
-            gameFrame.style.position = "fixed";
-            gameFrame.style.bottom = "50px";
-            gameFrame.style.left = "50px";
-            gameFrame.style.width = "400px";
-            gameFrame.style.height = "300px";
-            document.body.appendChild(gameFrame);
+        let mos = [];
+        for (let i = 0; i < 10; i++) {
+            mos.push(new Mo());
         }
 
-        spawnMaxChaos();
-        addGame();
+        function updateGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            mos.forEach(mo => {
+                mo.move();
+                mo.draw();
+            });
+            requestAnimationFrame(updateGame);
+        }
+
+        updateGame();
     </script>
 </body>
 </html>
