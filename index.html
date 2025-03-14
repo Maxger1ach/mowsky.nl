@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRAINROT MAX</title>
+    <title>MAXIMUM GOON</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; overflow: hidden; }
         html, body { width: 100%; height: 100%; background: black; position: relative; }
 
-        /* The bouncing, moving, cursed images */
-        .bouncing-img {
+        /* The cursed falling images */
+        .falling-img {
             position: absolute;
             width: 100px;
             height: 100px;
             background: url('mo.png') no-repeat center;
             background-size: cover;
-            animation: moveAround 3s infinite linear, rotate 1s infinite linear, flicker 0.1s infinite alternate;
+            animation: fall 5s linear infinite, rotate 1s infinite linear, flicker 0.2s infinite alternate;
         }
 
-        @keyframes moveAround {
-            0% { top: 0; left: 0; }
-            25% { top: 80vh; left: 20vw; }
-            50% { top: 50vh; left: 80vw; }
-            75% { top: 20vh; left: 40vw; }
-            100% { top: 0; left: 0; }
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
         @keyframes rotate {
@@ -36,7 +33,7 @@
             100% { filter: hue-rotate(360deg) brightness(2); }
         }
 
-        /* The "talking" images */
+        /* The talking text */
         .talking {
             position: absolute;
             font-size: 20px;
@@ -50,42 +47,22 @@
         }
 
         @keyframes glitchText {
-            0% { left: 10%; top: 10%; }
-            100% { left: 12%; top: 9%; }
-        }
-
-        /* The dumbest "game" ever */
-        #game {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
-            background: url('mo.png') no-repeat center;
-            background-size: cover;
-            border: 5px solid red;
-            cursor: pointer;
-            animation: shake 0.1s infinite alternate;
-        }
-
-        @keyframes shake {
-            0% { transform: translate(-50%, -50%) rotate(5deg); }
-            100% { transform: translate(-50%, -50%) rotate(-5deg); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
         }
     </style>
 </head>
 <body>
     <script>
         const phrases = [
-            "HELP ME", 
-            "I AM MO",
-            "BRAINROT ACTIVATED",
-            "WHY AM I HERE",
             "AAAAAAAAAAA",
-            "MOOOOO",
-            "YOU CAN'T ESCAPE",
-            "Goon mode: ON"
+            "BRAINROT INTENSIFIES",
+            "WHY AM I HERE",
+            "HELP",
+            "I AM MO",
+            "GOON MODE: ON",
+            "THE MO IS COMING",
+            "HIDE"
         ];
 
         const sounds = [
@@ -95,44 +72,30 @@
             "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"
         ];
 
-        function spawnChaos() {
-            for (let i = 0; i < 50; i++) {
+        function spawnCursedRain() {
+            setInterval(() => {
                 let img = document.createElement('div');
-                img.classList.add('bouncing-img');
+                img.classList.add('falling-img');
                 img.style.left = Math.random() * window.innerWidth + 'px';
-                img.style.top = Math.random() * window.innerHeight + 'px';
-                img.style.animationDuration = (Math.random() * 3 + 1) + 's';
+                img.style.width = (Math.random() * 100 + 50) + 'px';
+                img.style.height = img.style.width;
+                img.style.animationDuration = (Math.random() * 3 + 2) + 's';
                 document.body.appendChild(img);
-                
+
+                // Remove after falling
+                setTimeout(() => { img.remove(); }, 5000);
+
                 // Randomly make images "talk"
-                setInterval(() => {
+                if (Math.random() > 0.7) {
                     let talk = document.createElement('div');
                     talk.classList.add('talking');
                     talk.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-                    talk.style.top = img.style.top;
-                    talk.style.left = img.style.left;
+                    talk.style.top = Math.random() * 80 + 'vh';
+                    talk.style.left = Math.random() * 80 + 'vw';
                     document.body.appendChild(talk);
-                    setTimeout(() => { talk.remove(); }, 1000);
-                }, Math.random() * 3000 + 500);
-            }
-        }
-
-        function cursedGame() {
-            let gameDiv = document.createElement('div');
-            gameDiv.id = 'game';
-            document.body.appendChild(gameDiv);
-
-            gameDiv.addEventListener('click', function() {
-                let size = parseInt(window.getComputedStyle(gameDiv).width);
-                if (size < window.innerWidth * 2) {
-                    gameDiv.style.width = size * 1.3 + 'px';
-                    gameDiv.style.height = size * 1.3 + 'px';
-                } else {
-                    alert('YOU HAVE ASCENDED.');
-                    gameDiv.style.width = '200px';
-                    gameDiv.style.height = '200px';
+                    setTimeout(() => { talk.remove(); }, 2000);
                 }
-            });
+            }, 200);
         }
 
         function playRandomSounds() {
@@ -140,11 +103,10 @@
                 let audio = new Audio(sounds[Math.floor(Math.random() * sounds.length)]);
                 audio.volume = 1;
                 audio.play();
-            }, Math.random() * 2000 + 500);
+            }, Math.random() * 3000 + 500);
         }
 
-        spawnChaos();
-        cursedGame();
+        spawnCursedRain();
         playRandomSounds();
     </script>
 </body>
