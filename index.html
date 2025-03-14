@@ -3,65 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absolute Chaos</title>
+    <title>tuff website</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        html, body {
-            width: 100%;
-            height: 100%;
-            background: black;
-            position: relative;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; overflow: hidden; }
+        html, body { width: 100%; height: 100%; background: black; position: relative; }
+        
+        /* Cursed bouncing, flashing images */
         .bouncing-img {
             position: absolute;
             width: 150px;
             height: 150px;
             background: url('mo.png') no-repeat center;
             background-size: cover;
-            animation: bounce 3s infinite alternate ease-in-out, rotate 2s infinite linear;
+            animation: bounce 1s infinite alternate ease-in-out, rotate 0.5s infinite linear, flicker 0.1s infinite alternate;
         }
+
         @keyframes bounce {
             0% { top: 0; left: 0; }
-            100% { top: 80vh; left: 80vw; }
+            100% { top: 90vh; left: 90vw; }
         }
+
         @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(720deg) scale(1.5); }
         }
+
+        @keyframes flicker {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            100% { filter: hue-rotate(360deg) brightness(2); }
+        }
+
+        /* Cursed "game" button */
         #game {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
+            width: 200px;
+            height: 200px;
             background: url('mo.png') no-repeat center;
             background-size: cover;
-            border: 10px solid red;
+            border: 5px solid red;
             cursor: pointer;
+            animation: shake 0.1s infinite alternate;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(-50%, -50%) rotate(5deg); }
+            100% { transform: translate(-50%, -50%) rotate(-5deg); }
+        }
+
+        /* Text spam (but still using your image lmao) */
+        .text {
+            position: absolute;
+            font-size: 30px;
+            color: white;
+            font-weight: bold;
+            top: 10%;
+            left: 10%;
+            text-shadow: 2px 2px red, -2px -2px blue;
+            animation: glitchText 0.1s infinite alternate;
+        }
+
+        @keyframes glitchText {
+            0% { left: 10%; top: 10%; }
+            100% { left: 12%; top: 9%; }
         }
     </style>
 </head>
 <body>
     <script>
-        // Spawn a bunch of bouncing images
         function spawnChaos() {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 100; i++) {
                 let img = document.createElement('div');
                 img.classList.add('bouncing-img');
                 img.style.left = Math.random() * window.innerWidth + 'px';
                 img.style.top = Math.random() * window.innerHeight + 'px';
-                img.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                img.style.animationDuration = (Math.random() * 1.5 + 0.5) + 's';
                 document.body.appendChild(img);
             }
         }
 
-        // Stupid "game" where clicking the image makes it bigger until it covers the screen
         function cursedGame() {
             let gameDiv = document.createElement('div');
             gameDiv.id = 'game';
@@ -70,18 +92,39 @@
             gameDiv.addEventListener('click', function() {
                 let size = parseInt(window.getComputedStyle(gameDiv).width);
                 if (size < window.innerWidth * 2) {
-                    gameDiv.style.width = size * 1.5 + 'px';
-                    gameDiv.style.height = size * 1.5 + 'px';
+                    gameDiv.style.width = size * 1.3 + 'px';
+                    gameDiv.style.height = size * 1.3 + 'px';
                 } else {
-                    alert('You win... or lose?');
-                    gameDiv.style.width = '300px';
-                    gameDiv.style.height = '300px';
+                    alert('Congratulations?');
+                    gameDiv.style.width = '200px';
+                    gameDiv.style.height = '200px';
                 }
             });
         }
 
+        function spawnTextSpam() {
+            for (let i = 0; i < 10; i++) {
+                let text = document.createElement('div');
+                text.classList.add('text');
+                text.innerHTML = `<img src="mo.png" width="100">`; 
+                text.style.top = Math.random() * 80 + 'vh';
+                text.style.left = Math.random() * 80 + 'vw';
+                text.style.animationDuration = (Math.random() * 0.2 + 0.1) + 's';
+                document.body.appendChild(text);
+            }
+        }
+
+        function playHorrificNoise() {
+            let audio = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3'); 
+            audio.loop = true;
+            audio.volume = 1;
+            audio.play();
+        }
+
         spawnChaos();
         cursedGame();
+        spawnTextSpam();
+        playHorrificNoise();
     </script>
 </body>
 </html>
